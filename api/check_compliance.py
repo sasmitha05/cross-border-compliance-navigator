@@ -5,41 +5,60 @@ from backend.schemas import ComplianceRequest
 import json
 
 def handler(request):
+    # Allow only POST
     if request.method != "POST":
         return {
             "statusCode": 405,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": json.dumps({"message": "Method not allowed"})
         }
 
-    body = json.loads(request.body)
-    data = ComplianceRequest(**body)
+    try:
+        body = json.loads(request.body)
+        data = ComplianceRequest(**body)
 
-    result = evaluate_compliance(
-        data.country_from,
-        data.country_to,
-        data.data_type,
-        data.action_type
-    )
+        result = evaluate_compliance(
+            data.country_from,
+            data.country_to,
+            data.data_type,
+            data.action_type
+        )
 
-    explanation = generate_explanation(
-        data.country_from,
-        data.country_to,
-        data.data_type,
-        result["status"],
-        result["risk_score"]
-    )
+        explanation = generate_explanation(
+            data.country_from,
+            data.country_to,
+            data.data_type,
+            result["status"],
+            result["risk_score"]
+        )
 
-    log_decision(
-        data.country_from,
-        data.country_to,
-        data.data_type,
-        result["status"]
-    )
+        log_decision(
+            data.country_from,
+            data.country_to,
+            data.data_type,
+            result["status"]
+        )
 
-    result["ai_explanation"] = explanation
+        result["ai_explanation"] = explanation
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps(result)
-    }
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps(result)
+        }
 
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({"error": str(e)})
+        }
