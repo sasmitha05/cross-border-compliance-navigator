@@ -1,19 +1,22 @@
 {
-  "version": 2,
   "builds": [
     {
-      "src": "api/*.py",
+      "src": "api/check_compliance.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/check_compliance",
-      "dest": "/api/check_compliance.py"
+      "dest": "api/check_compliance.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "frontend/$1"
     }
   ]
 }
