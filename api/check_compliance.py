@@ -3,12 +3,11 @@ import json
 import sys
 import os
 
-# Add parent directory to path so we can import backend modules
+# Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from backend.agent import evaluate_compliance
 from backend.explainer import generate_explanation
-from backend.logger import log_decision
 from backend.schemas import ComplianceRequest
 
 class handler(BaseHTTPRequestHandler):
@@ -26,11 +25,12 @@ class handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         try:
-            content_length = int(self.headers['Content-Length'])
+            # Read request body
+            content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             body = json.loads(post_data.decode('utf-8'))
             
-            # Validate request
+            # Validate request using Pydantic
             data = ComplianceRequest(**body)
             
             # Evaluate compliance
@@ -50,24 +50,26 @@ class handler(BaseHTTPRequestHandler):
                 result["risk_score"]
             )
             
-            # Log decision
-            log_decision(
-                data.country_from,
-                data.country_to,
-                data.data_type,
-                result["status"]
-            )
-            
             result["ai_explanation"] = explanation
             
+            # Return JSON response
             self._set_headers(200)
             self.wfile.write(json.dumps(result).encode('utf-8'))
             
+        except json.JSONDecodeError as e:
+            self._set_headers(400)
+            error = {
+                "status": "ERROR",
+                "risk_score": 0,
+                "ai_explanation": f"Invalid JSON in request: {str(e)}"
+            }
+            self.wfile.write(json.dumps(error).encode('utf-8'))
+            
         except Exception as e:
             self._set_headers(500)
-            error_response = {
+            error = {
                 "status": "ERROR",
                 "risk_score": 0,
                 "ai_explanation": f"Server error: {str(e)}"
             }
-            self.wfile.write(json.dumps(error_response).encode('utf-8'))
+            self.wfile.write(json.dumps(error).encode('utf-8'))
