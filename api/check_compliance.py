@@ -27,7 +27,6 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         
     def do_GET(self):
-        # Health check endpoint
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self._send_cors_headers()
@@ -41,23 +40,17 @@ class handler(BaseHTTPRequestHandler):
         
     def do_POST(self):
         try:
-            # Read the request body
             content_length = int(self.headers.get('Content-Length', 0))
             body = self.rfile.read(content_length).decode('utf-8')
-            
-            # Parse JSON
             data = json.loads(body)
             
-            # Validate required fields
             required_fields = ['country_from', 'country_to', 'data_type', 'action_type']
             for field in required_fields:
                 if field not in data:
                     raise ValueError(f"Missing required field: {field}")
             
-            # Validate with Pydantic
             request_data = ComplianceRequest(**data)
             
-            # Evaluate compliance
             result = evaluate_compliance(
                 request_data.country_from,
                 request_data.country_to,
@@ -65,7 +58,6 @@ class handler(BaseHTTPRequestHandler):
                 request_data.action_type
             )
             
-            # Generate explanation
             explanation = generate_explanation(
                 request_data.country_from,
                 request_data.country_to,
@@ -74,10 +66,8 @@ class handler(BaseHTTPRequestHandler):
                 result["risk_score"]
             )
             
-            # Add explanation to result
             result["ai_explanation"] = explanation
             
-            # Send success response
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
             self._send_cors_headers()
