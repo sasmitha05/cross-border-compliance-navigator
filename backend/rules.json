@@ -1,0 +1,23 @@
+{
+  "EU": {
+    "share_customer_data": {
+      "risk": "HIGH",
+      "rule": "GDPR requires explicit consent before exporting personal data",
+      "decision": "BLOCK"
+    }
+  },
+  "India": {
+    "share_customer_data": {
+      "risk": "HIGH",
+      "rule": "New Indian data law requires strict localization",
+      "decision": "BLOCK"
+    }
+  },
+  "USA": {
+    "share_customer_data": {
+      "risk": "LOW",
+      "rule": "Data sharing is allowed with standard safeguards",
+      "decision": "ALLOW"
+    }
+  }
+}

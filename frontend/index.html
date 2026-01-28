@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cross-Border Compliance Navigator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 600px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .header p {
+      margin-top: 8px;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .button-container {
+      margin-top: 32px;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 12px;
+      line-height: 1.8;
+      display: none;
+      animation: slideIn 0.4s ease;
+    }
+
+    .result.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(0,0,0,0.1);
+    }
+
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .risk-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 13px;
+      margin-left: auto;
+    }
+
+    .result-content {
+      font-size: 15px;
+      color: #444;
+    }
+
+    .result-content strong {
+      color: #222;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .BLOCKED {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+    }
+
+    .BLOCKED .status-badge {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    .BLOCKED .risk-badge {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .REVIEW_REQUIRED {
+      background: linear-gradient(135deg, #ffd93d 0%, #ffb347 100%);
+      color: #7a5b00;
+    }
+
+    .REVIEW_REQUIRED .status-badge {
+      background: rgba(122,91,0,0.15);
+      color: #7a5b00;
+    }
+
+    .REVIEW_REQUIRED .risk-badge {
+      background: rgba(122,91,0,0.1);
+      color: #7a5b00;
+    }
+
+    .ALLOWED {
+      background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+      color: white;
+    }
+
+    .ALLOWED .status-badge {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    .ALLOWED .risk-badge {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .ERROR {
+      background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+      color: white;
+    }
+
+    .ERROR .status-badge {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    .icon {
+      font-size: 24px;
+    }
+
+    @media (max-width: 640px) {
+      .content {
+        padding: 30px 24px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .header p {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>
+      <span class="icon">🌍</span>
+      Cross-Border Compliance Navigator
+    </h1>
+    <p>Verify international data transfer compliance in seconds</p>
+  </div>
+
+  <div class="content">
+    <form onsubmit="event.preventDefault(); checkCompliance();">
+      <div class="form-group">
+        <label for="from">From Country</label>
+        <input id="from" type="text" value="India" placeholder="e.g., India" required>
+      </div>
+
+      <div class="form-group">
+        <label for="to">To Country</label>
+        <input id="to" type="text" value="Germany" placeholder="e.g., Germany" required>
+      </div>
+
+      <div class="form-group">
+        <label for="data">Data Type</label>
+        <select id="data" required>
+          <option value="personal_data">Personal Data</option>
+          <option value="financial_data">Financial Data</option>
+          <option value="non_personal_data">Non-Personal Data</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="action_type">Action Type</label>
+        <select id="action_type" required>
+          <option value="share_customer_data">Share Customer Data</option>
+          <option value="export_financial_data">Export Financial Data</option>
+          <option value="access_internal_system">Access Internal System</option>
+        </select>
+      </div>
+
+      <div class="button-container">
+        <button type="submit" id="checkBtn">
+          Check Compliance
+        </button>
+      </div>
+    </form>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 12px; color: #666;">Analyzing compliance requirements...</p>
+    </div>
+
+    <div id="output"></div>
+  </div>
+</div>
+
+<script>
+async function checkCompliance() {
+  const outputDiv = document.getElementById("output");
+  const loadingDiv = document.getElementById("loading");
+  const checkBtn = document.getElementById("checkBtn");
+
+  // Show loading state
+  loadingDiv.classList.add('active');
+  outputDiv.innerHTML = '';
+  checkBtn.disabled = true;
+
+  try {
+    const response = await fetch("/api/check-compliance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        country_from: document.getElementById("from").value,
+        country_to: document.getElementById("to").value,
+        data_type: document.getElementById("data").value,
+        action_type: document.getElementById("action_type").value || "unknown_action"
+      })
+    });
+
+    const data = await response.json();
+    const statusClass = data.status || 'ERROR';
+    
+    // Status icons
+    const statusIcons = {
+      'BLOCKED': '🚫',
+      'REVIEW_REQUIRED': '⚠️',
+      'ALLOWED': '✅',
+      'ERROR': '❌'
+    };
+
+    outputDiv.innerHTML = `
+      <div class="result ${statusClass} active">
+        <div class="result-header">
+          <span class="icon">${statusIcons[statusClass] || '❓'}</span>
+          <span class="status-badge">${data.status || 'ERROR'}</span>
+          <span class="risk-badge">Risk: ${data.risk_score ?? 'N/A'}</span>
+        </div>
+        <div class="result-content">
+          <strong>Analysis:</strong>
+          ${data.ai_explanation || data.reason || data.message || 'No explanation available'}
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    outputDiv.innerHTML = `
+      <div class="result ERROR active">
+        <div class="result-header">
+          <span class="icon">❌</span>
+          <span class="status-badge">ERROR</span>
+        </div>
+        <div class="result-content">
+          <strong>Error Message:</strong>
+          ${err.message}
+        </div>
+      </div>
+    `;
+  } finally {
+    loadingDiv.classList.remove('active');
+    checkBtn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>

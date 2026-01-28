@@ -1,0 +1,48 @@
+{
+  "India": {
+    "allowed_data_types": [
+      "financial_data",
+      "non_personal_data"
+    ],
+    "allowed_actions": [
+      "export_financial_data",
+      "access_internal_system"
+    ]
+  },
+  "Germany": {
+    "allowed_data_types": [
+      "personal_data",
+      "financial_data",
+      "non_personal_data"
+    ],
+    "allowed_actions": [
+      "share_customer_data",
+      "export_financial_data",
+      "access_internal_system"
+    ]
+  },
+  "France": {
+    "allowed_data_types": [
+      "personal_data",
+      "financial_data"
+    ],
+    "allowed_actions": [
+      "share_customer_data",
+      "export_financial_data"
+    ]
+  },
+  "USA": {
+    "allowed_data_types": [
+      "financial_data",
+      "non_personal_data"
+    ],
+    "allowed_actions": [
+      "share_customer_data",
+      "export_financial_data"
+    ]
+  },
+  "China": {
+    "allowed_data_types": [],
+    "allowed_actions": []
+  }
+}

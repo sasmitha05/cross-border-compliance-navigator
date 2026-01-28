@@ -1,0 +1,7 @@
+[2026-01-27 11:10:13] India -> Germany | personal_data | REVIEW_REQUIRED
+[2026-01-27 11:51:31] India -> Germany | personal_data | {'status': 'REVIEW_REQUIRED', 'reason': 'GDPR safeguards required for EU personal data transfers.'}
+[2026-01-27 11:52:50] India -> Germany | personal_data | {'status': 'BLOCKED', 'reason': '🚫 Data sharing from India is blocked due to updated regulations.'}
+[2026-01-27 11:59:06] India -> Germany | personal_data | {'status': 'REVIEW_REQUIRED', 'risk_score': 70, 'reason': 'GDPR safeguards required for EU personal data transfers.'}
+[2026-01-27 12:01:34] India -> Germany | personal_data | {'status': 'BLOCKED', 'risk_score': 100, 'reason': '🚫 Data sharing from India is blocked due to updated regulations.'}
+[2026-01-27 12:06:41] India -> Germany | personal_data | {'status': 'REVIEW_REQUIRED', 'risk_score': 70, 'reason': 'GDPR safeguards required for EU personal data transfers.'}
+[2026-01-27 12:07:49] India -> Germany | personal_data | {'status': 'REVIEW_REQUIRED', 'risk_score': 70, 'reason': 'GDPR safeguards required for EU personal data transfers.'}
