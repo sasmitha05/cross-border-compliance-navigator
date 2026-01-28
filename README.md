@@ -192,6 +192,3 @@ POST /api/check-compliance
 This project **simulates** regulatory logic for educational and demonstrative purposes.
 It is **not legal advice** and should not be used as a substitute for professional compliance review.
 
-
-
- 💪
