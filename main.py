@@ -16,7 +16,7 @@ app.add_middleware(
 )
 
 # Compliance check endpoint
-@app.post("/api/check-compliance")
+@app.post("/api/check_compliance")
 def check_compliance(payload: ComplianceRequest):
     try:
         return evaluate_compliance(
