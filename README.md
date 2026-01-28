@@ -42,6 +42,7 @@ This project helps organizations quickly determine whether a proposed internatio
 
 ## 🏗️ Project Architecture
 
+```text
 cross-border-compliance-navigator/
 │
 ├── backend/
@@ -60,6 +61,7 @@ cross-border-compliance-navigator/
 │
 ├── main.py                     # API entry point
 └── README.md
+
 
 
 ## ⚙️ Core Logic Explained
